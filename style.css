@@ -473,6 +473,14 @@ svg {
   max-width: 44rem;
 }
 
+.hero .eyebrow {
+  margin-bottom: var(--space-4);
+  color: rgba(250, 250, 248, 0.66);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+}
+
 .hero h1 {
   max-width: 100%;
   margin-bottom: var(--space-3);
