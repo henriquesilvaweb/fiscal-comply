@@ -4,28 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Fiscal Comply | Contabilidade e Estratégia Tributária</title>
+    <title>Fiscal Comply | Consultoria Contábil e Tributária em Campinas</title>
     <meta
       name="description"
-      content="Consultoria contábil, fiscal e tributária para empresas que buscam segurança, organização e planejamento para crescer."
+      content="Consultoria contábil, consultoria tributária e planejamento tributário em Campinas/SP para empresas que buscam segurança e organização para crescer."
     >
 
-    <!-- Open Graph provisório: atualizar URL e incluir a imagem definitiva antes da publicação. -->
+    <meta name="theme-color" content="#1F3127">
+    <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Open Graph: atualizar apenas a URL absoluta quando o domínio definitivo for publicado. -->
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="Fiscal Comply">
-    <meta property="og:title" content="Fiscal Comply | Contabilidade e Estratégia Tributária">
+    <meta property="og:title" content="Fiscal Comply | Consultoria Contábil e Tributária em Campinas">
     <meta
       property="og:description"
-      content="Consultoria contábil, fiscal e tributária para empresas que buscam segurança, organização e planejamento para crescer."
+      content="Consultoria contábil, consultoria tributária e planejamento tributário em Campinas/SP para empresas que buscam segurança e organização para crescer."
     >
     <meta property="og:url" content="#">
-    <!-- TODO: adicionar a meta og:image quando a imagem Open Graph definitiva estiver disponível. -->
+    <meta property="og:image" content="assets/images/og-fiscal-comply.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Fiscal Comply">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Fiscal Comply | Consultoria Contábil e Tributária em Campinas">
+    <meta
+      name="twitter:description"
+      content="Consultoria contábil, consultoria tributária e planejamento tributário em Campinas/SP para empresas que buscam segurança e organização para crescer."
+    >
+    <meta name="twitter:image" content="assets/images/og-fiscal-comply.png">
+    <!-- TODO: substituir og:url pela URL oficial assim que o domínio definitivo for publicado. -->
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Fiscal Comply",
+        "legalName": "Fiscal Comply Soluções Tributárias e Financeiras Ltda",
+        "logo": "assets/logo/fiscal-comply-wordmark.png",
+        "image": "assets/images/og-fiscal-comply.png",
+        "taxID": "33.655.310/0001-01",
+        "description": "Consultoria contábil, consultoria tributária e planejamento tributário em Campinas/SP.",
+        "telephone": "+55 19 99837-4336",
+        "email": "ana.arcanjo@fiscalcomply.com.br",
+        "sameAs": [
+          "https://instagram.com/fiscalcomply"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rua General Osório, nº 1577",
+          "addressLocality": "Campinas",
+          "addressRegion": "SP",
+          "postalCode": "13010-111",
+          "addressCountry": "BR"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "https://schema.org/Monday",
+            "https://schema.org/Tuesday",
+            "https://schema.org/Wednesday",
+            "https://schema.org/Thursday",
+            "https://schema.org/Friday"
+          ],
+          "opens": "08:00",
+          "closes": "18:00"
+        }
+      }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Libre+Baskerville:wght@400;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
       rel="stylesheet"
     >
     <link rel="stylesheet" href="style.css">
@@ -36,8 +91,13 @@
     <header class="site-header" data-header>
       <div class="container header-inner">
         <a class="brand" href="#inicio" aria-label="Fiscal Comply — início">
-          <span class="brand-name">Fiscal Comply</span>
-          <span class="brand-tagline">Contabilidade e Estratégia Tributária</span>
+          <img
+            class="brand-wordmark"
+            src="assets/logo/fiscal-comply-wordmark.png"
+            alt="Fiscal Comply"
+            width="742"
+            height="163"
+          >
         </a>
 
         <button
@@ -62,7 +122,14 @@
             <li><a href="#sobre">Sobre</a></li>
             <li><a href="#contato">Contato</a></li>
           </ul>
-          <a class="button button-small nav-cta" href="#contato">Solicitar uma análise</a>
+          <a
+            class="button button-small nav-cta"
+            href="https://wa.me/5519998374336?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20uma%20an%C3%A1lise%20para%20minha%20empresa."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Solicitar uma análise
+          </a>
         </nav>
       </div>
     </header>
@@ -78,7 +145,14 @@
               identificar oportunidades tributárias com análise técnica e acompanhamento próximo.
             </p>
             <div class="hero-actions">
-              <a class="button button-accent" href="#contato">Solicitar uma análise</a>
+              <a
+                class="button button-accent"
+                href="https://wa.me/5519998374336?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20uma%20an%C3%A1lise%20para%20minha%20empresa."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Solicitar uma análise
+              </a>
               <a class="button button-outline-light" href="#servicos">Conhecer os serviços</a>
             </div>
             <p class="trust-line">
@@ -278,14 +352,27 @@
       <section class="section section-about" id="sobre">
         <div class="container about-grid">
           <div class="about-visual">
-            <!-- TODO: substituir este espaço pela foto definitiva da responsável ou da equipe. -->
-            <div
-              class="photo-placeholder"
-              role="img"
-              aria-label="Espaço reservado para futura foto da responsável ou da equipe Fiscal Comply"
-            >
-              <span>Fiscal Comply</span>
-              <span>Imagem institucional em preparação</span>
+            <figure class="about-photo">
+              <img
+                src="assets/images/equipe-fiscal-comply.png"
+                alt="Sócios Ana Zilia e José Arcanjo, da Fiscal Comply"
+                width="853"
+                height="1280"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+            <div class="partners" aria-label="Sócios da Fiscal Comply">
+              <div class="partner">
+                <strong>Ana Zilia</strong>
+                <span>Contadora</span>
+                <span>Sócia</span>
+              </div>
+              <div class="partner">
+                <strong>José Arcanjo</strong>
+                <span>Contador</span>
+                <span>Sócio</span>
+              </div>
             </div>
           </div>
 
@@ -293,9 +380,10 @@
             <p class="eyebrow">Sobre a Fiscal Comply</p>
             <h2>Experiência e responsabilidade para cuidar de decisões importantes.</h2>
             <p>
-              A Fiscal Comply atua com consultoria contábil, fiscal e tributária, apoiando empresas que precisam de
-              mais organização, segurança e clareza para crescer. O trabalho combina conhecimento técnico, análise
-              criteriosa e acompanhamento próximo, sempre respeitando a realidade de cada negócio.
+              A Fiscal Comply Soluções Tributárias e Financeiras é conduzida pelos sócios Ana Zilia e José Arcanjo.
+              Com experiência nas áreas contábil, fiscal e tributária, a empresa apoia negócios que buscam mais
+              organização, segurança e clareza para tomar decisões. O trabalho combina análise criteriosa, orientação
+              responsável e acompanhamento próximo, sempre respeitando a realidade de cada empresa.
             </p>
             <ul class="values-list" aria-label="Valores da Fiscal Comply">
               <li><span aria-hidden="true"></span>Ética</li>
@@ -449,8 +537,14 @@
               riscos, organizar processos e tomar decisões com mais clareza.
             </p>
           </div>
-          <!-- TODO: substituir "#" pelo link definitivo do WhatsApp da Fiscal Comply. -->
-          <a class="button button-accent cta-button" href="#">Falar com um especialista</a>
+          <a
+            class="button button-accent cta-button"
+            href="https://wa.me/5519998374336?text=Olá,%20gostaria%20de%20solicitar%20uma%20análise%20para%20minha%20empresa."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Falar com um especialista
+          </a>
         </div>
       </section>
     </main>
@@ -459,10 +553,20 @@
       <div class="container footer-grid">
         <div class="footer-brand">
           <a class="brand brand-footer" href="#inicio" aria-label="Fiscal Comply — voltar ao início">
-            <span class="brand-name">Fiscal Comply</span>
-            <span class="brand-tagline">Contabilidade e Estratégia Tributária</span>
+            <img
+              class="brand-wordmark"
+              src="assets/logo/fiscal-comply-wordmark.png"
+              alt="Fiscal Comply"
+              width="742"
+              height="163"
+            >
           </a>
           <p>Clareza técnica para decisões empresariais mais seguras.</p>
+          <p class="footer-legal">
+            <strong>Fiscal Comply Soluções Tributárias e Financeiras Ltda</strong>
+            <span>CNPJ</span>
+            33.655.310/0001-01
+          </p>
         </div>
 
         <nav class="footer-nav" aria-label="Navegação do rodapé">
@@ -479,19 +583,44 @@
         <div class="footer-contact">
           <h2>Contato</h2>
           <dl>
-            <div><dt>Telefone</dt><dd>A definir</dd></div>
-            <div><dt>WhatsApp</dt><dd>A definir</dd></div>
-            <div><dt>E-mail</dt><dd>A definir</dd></div>
-            <div><dt>Endereço</dt><dd>A definir</dd></div>
+            <div>
+              <dt>Telefone</dt>
+              <dd><a href="tel:+5519998374336">(19) 99837-4336</a></dd>
+            </div>
+            <div>
+              <dt>E-mail</dt>
+              <dd>
+                <a class="footer-email" href="mailto:ana.arcanjo@fiscalcomply.com.br">
+                  ana.arcanjo@fiscalcomply.com.br
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt>Endereço</dt>
+              <dd>
+                <address>
+                  Rua General Osório, nº 1577<br>
+                  Centro — Campinas/SP<br>
+                  CEP 13010-111
+                </address>
+              </dd>
+            </div>
+            <div>
+              <dt>Horário</dt>
+              <dd>
+                Segunda a sexta-feira<br>
+                Das 08h às 18h
+              </dd>
+            </div>
+            <div>
+              <dt>Instagram</dt>
+              <dd>
+                <a href="https://instagram.com/fiscalcomply" target="_blank" rel="noopener noreferrer">
+                  @fiscalcomply
+                </a>
+              </dd>
+            </div>
           </dl>
-        </div>
-
-        <div class="footer-social">
-          <h2>Redes sociais</h2>
-          <ul>
-            <li><span>Instagram — A definir</span></li>
-            <li><span>LinkedIn — A definir</span></li>
-          </ul>
         </div>
       </div>
 
