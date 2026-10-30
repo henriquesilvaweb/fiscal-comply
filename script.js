@@ -190,18 +190,3 @@ if (currentYear) {
   currentYear.textContent = new Date().getFullYear();
 }
 
-/* Contact intent tracking: listens without changing the WhatsApp navigation. */
-document.querySelectorAll('[data-track-contact="whatsapp"]').forEach((link) => {
-  link.addEventListener("click", () => {
-    const section = link.closest("header, section, footer");
-    const placement = section?.id || (section?.tagName || "unknown").toLowerCase();
-    const event = {
-      event: "whatsapp_click",
-      contact_method: "whatsapp",
-      link_location: placement,
-      page_path: window.location.pathname,
-    };
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(event);
-  });
-});
