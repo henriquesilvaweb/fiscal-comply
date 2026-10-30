@@ -8,7 +8,7 @@ document.addEventListener("click", (event) => {
     window.gtag("event", "whatsapp_click", {
       link_location: placement,
       page_path: window.location.pathname,
-      link_url: anchor.href,
+      link_domain: new URL(anchor.href).hostname,
       transport_type: "beacon"
     });
   }
