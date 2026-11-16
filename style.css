@@ -1609,3 +1609,6 @@ svg {
     transform: none;
   }
 }
+
+/* Atualização editorial com data de revisão e fontes verificáveis */
+.update-note{margin-top:24px;max-width:760px;line-height:1.65}.update-note strong{font-weight:700}.update-note time{white-space:nowrap}
