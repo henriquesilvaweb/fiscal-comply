@@ -29,3 +29,5 @@ img{max-width:100%;height:auto}
   .top a{font-size:14px}
   aside{padding:22px;margin-block:32px}
 }
+
+.table-scroll{overflow-x:auto;max-width:100%;margin:20px 0}.table-scroll:focus-visible{outline:3px solid #c99b54;outline-offset:3px}.table-scroll table{border-collapse:collapse;width:100%;min-width:600px;background:#fff;font-size:15px}.table-scroll th,.table-scroll td{border:1px solid #cbd5cc;padding:12px;text-align:left;vertical-align:top}.table-scroll thead{background:#e7ede6}.table-scroll caption{text-align:left;font-weight:600;padding-bottom:12px}
