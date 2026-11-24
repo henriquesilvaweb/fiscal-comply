@@ -1,0 +1,13 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fiscal Comply | Laboratório RTC</title><style>body{margin:0;background:#f8f7f3;color:#203b2d;font:16px system-ui}header{background:#203b2d;color:white;padding:24px}main{max-width:900px;margin:auto;padding:20px}section{border:1px solid #d5ddd5;border-radius:10px;background:white;padding:20px}textarea{width:100%;min-height:230px;box-sizing:border-box;padding:12px;font:13px monospace}button{padding:13px;border:0;background:#216a46;color:white;border-radius:6px;cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}a{color:inherit}.warn{background:#fff4d7;padding:12px;margin:16px 0}</style><header><small>FISCAL COMPLY • LABORATÓRIO LOCAL</small><h1>Reforma Tributária</h1></header><main><div class="warn"><strong>Protótipo técnico, não disponível ao público.</strong> Use apenas dados fictícios. As alíquotas presentes nos exemplos não são orientação tributária.</div><p><a href="/">Regime regular</a> | <a href="/simples.html">Simples Nacional</a></p><section><h2>Simples Nacional</h2><p>O valor é calculado pelo motor oficial quando executado localmente. Resultados parciais devem ser analisados item a item.</p><label for="payload">Operação de teste em JSON</label><textarea id="payload"></textarea><p><button id="run">Consultar API local</button></p><pre id="output" role="status">Nenhuma operação enviada.</pre></section><script>
+const example = {"id":"507f1f77bcf86cd799439011","versao":"2.0.0","data":"2027-03-15","tpDoc":"55","CRT":"1","itens":[{"numero":1,"cAtivSN":"01","cClassTrib":"000001","baseCalculo":"950.00","valorImpostoSeletivo":"50.00","pIBSSN":"1.25","pCBSSN":"2.75"}]};
+document.getElementById('payload').value=JSON.stringify(example,null,2);
+document.getElementById('run').onclick=async ()=>{
+const out=document.getElementById('output');out.textContent='Consultando o motor oficial local...';
+try{
+const resp=await fetch('/api/simples',{method:'POST',headers:{'content-type':'application/json'},body:document.getElementById('payload').value});
+const data=await resp.json();
+if(!resp.ok){out.textContent='Nenhum cálculo válido: '+(data.erro||resp.status);return;}
+out.textContent=JSON.stringify({estados:data.estados,parcial:data.parcial,resultado:data.resultado},null,2);
+}catch(e){out.textContent='Erro na consulta: '+e.message;}
+};
+</script></main></html>
