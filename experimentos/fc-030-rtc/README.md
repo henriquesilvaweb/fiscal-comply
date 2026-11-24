@@ -1,26 +1,26 @@
-# FC-030 | Laboratório de integração da Calculadora RTC
+# FC-035 | Calculadora da Reforma Tributária: laboratório isolado
 
-**Situação: laboratório v2 testado localmente, não publicado no site.** Atualizado em 24/11/2026.
+**Estado em 24/11/2026:** motor oficial do regime regular comprovadamente executado com Java 25 em ambiente isolado. Nenhuma calculadora pública no site. A pasta histórica ainda chama fc-030; na planilha oficial a tarefa é FC-035, já que FC-030 se refere ao relatório mensal.
 
-## Entregas
+## Resultado confirmado
 
-- Código executável v2: https://drive.google.com/file/d/18lzmXafBY9Jq-X43TKGjkuyRw2tDjITY/view
-- Interface responsiva para preparar JSON, validar entrada, interpretar estados e **consultar uma API oficial somente se estiver rodando localmente**.
-- Gateway Node local em 127.0.0.1:8787, que encaminha somente à API local em 127.0.0.1:8080. Não expor na internet nem usar dados reais.
-- 12 testes automatizados aprovados: 6 do contrato e 6 do gateway usando respostas simuladas (mocks). Os testes NÃO conferem a matemática tributária da Receita.
+- [GitHub Actions #45496118616](https://github.com/henriquesilvaweb/fiscal-comply/actions/runs/45496118616): sucesso. Java 25, migração Flyway/SQLite e API oficial.
+- Suíte oficial: **1.314 testes**, zero falhas, zero erros e dez ignorados.
+- Exemplo oficial da Receita: HTTP 200, três itens `CALCULO_SIMULADO` e um `INCONSISTENCIA_ENTRADA`.
+- Terceiro item (exemplo): IBS R$ 0,48 e CBS R$ 42,24. Totais: IBS R$ 0,64, CBS R$ 56,76 e IS R$ 15,00. Não são alíquotas universais.
+- [Evidência permanente no Drive](https://drive.google.com/file/d/18i-XzmgWlCQFrcJhaBfE32Ix8IKnG8hd/view) contém entrada, saída e relatórios de testes.
 
-## Bloqueios honestos
+## Laboratório de interface
 
-O motor oficial não foi iniciado. O ambiente tem Java 21 e o código exige Java 25; acesso direto ao clone do GitHub está bloqueado por DNS. Por isso ainda não houve migração SQLite, execução Maven nem testes com resposta tributária real.
+[Pacote local v2](https://drive.google.com/file/d/18lzmXafBY9Jq-X43TKGjkuyRw2tDjITY/view): interface experimental, gateway Node só para localhost e 12 testes Node com respostas simuladas (mocks). Não comprova valores reais nem permite publicação pública sem ajustes.
 
-## Fontes e requisitos
+## Próximos testes
 
-- Código da Receita: https://github.com/ReceitaFederal/calculadora-rtc-regime-regular
-- Exemplo: https://github.com/ReceitaFederal/calculadora-rtc-regime-regular/blob/main/docs/exemplos.md
-- Simples: https://github.com/ReceitaFederal/calculadora-rtc-simples-nacional
-- Licença dos motores: MIT, com preservação dos avisos de copyright.
-- Manual do projeto: https://docs.google.com/document/d/1qYoEUTUD9Y7McNW_X4izkywSwumKyJqKDIqx8vNpGDE/edit
+- [Regime regular: verificação numérica estrita](../../.github/workflows/fc030-rtc-engine.yml). O primeiro teste estrito falhou por erro de leitura do campo no próprio teste. Corrigido em eb56bce70146377f6d74b8ce4e051db04eaeae15; conferir resultado da nova execução.
+- [Simples Nacional: motor separado](../../.github/workflows/fc035-rtc-simples.yml). Usa Java 25, scripts oficiais de migração e testes Maven; conferir a execução antes de declarar aprovado.
 
-## Próxima etapa
+## Antes de qualquer publicação
 
-Dispor de Java 25 e fonte oficial, gerar banco via Flyway, executar testes Maven e comparar o cálculo com exemplo oficial. Revisar resultados com dona Ana e José Carlos antes de considerar publicação. Este PR não deve ser incorporado à produção nesta fase.
+Conferir os dois testes, integrar interface e API com segurança e infraestrutura adequada, submeter casos e regras à revisão de Ana e José Carlos, avaliar custo/atualização/privacidade, obter aprovação de produção. Não misturar dados dos clientes com testes.
+
+Fontes: [Receita regime regular](https://github.com/ReceitaFederal/calculadora-rtc-regime-regular), [Receita Simples Nacional](https://github.com/ReceitaFederal/calculadora-rtc-simples-nacional). Licença MIT com preservação dos avisos.
