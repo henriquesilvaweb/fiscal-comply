@@ -57,8 +57,10 @@ jobs:
           nohup ./mvnw spring-boot:run -Dspring-boot.run.profiles=offline --batch-mode > api-regular.log 2>&1 &
           popd
           for i in $(seq 1 90); do
-            status=$(curl -sS --max-time 2 -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/api/swagger-ui.html 2>/dev/null || true)
-            if [ "$status" = "200" ]; then echo 'Motor regular iniciado'; exit 0; fi
+            if curl -fsS --max-time 2 -o /dev/null http://127.0.0.1:8080/api/swagger-ui.html 2>/dev/null; then
+              echo 'Motor regular iniciado (HTTP 2xx ou redirecionamento válido)'
+              exit 0
+            fi
             sleep 2
           done
           tail -100 regular/api-regular.log
