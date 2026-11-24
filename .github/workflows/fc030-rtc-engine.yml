@@ -104,7 +104,7 @@ jobs:
           item3 = objs[2]['tribCalc']['IBSCBS']['gIBSCBS']
           from decimal import Decimal
           def dec(x): return Decimal(str(x))
-          assert dec(item3['gIBS']['vIBS']) == Decimal('0.48'), item3
+          assert dec(item3['vIBS']) == Decimal('0.48'), item3
           assert dec(item3['gCBS']['vCBS']) == Decimal('42.24'), item3
           totals = r['total']['tribCalc']
           assert dec(totals['IBSCBSTot']['gIBS']['vIBS']) == Decimal('0.64'), totals
