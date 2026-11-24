@@ -1,0 +1,84 @@
+name: FC-035 | Integração real de ponta a ponta
+on:
+  push:
+    branches:
+      - prototype/fc-030-rtc-laboratorio
+    paths:
+      - 'experimentos/fc-035-integracao/**'
+      - '.github/workflows/fc035-e2e.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ponta-a-ponta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Obter laboratório isolado
+        uses: actions/checkout@v4
+        with:
+          path: site
+
+      - name: Obter motor oficial regime regular
+        uses: actions/checkout@v4
+        with:
+          repository: ReceitaFederal/calculadora-rtc-regime-regular
+          path: regular
+          persist-credentials: false
+
+      - name: Obter motor oficial Simples Nacional
+        uses: actions/checkout@v4
+        with:
+          repository: ReceitaFederal/calculadora-rtc-simples-nacional
+          path: simples
+          persist-credentials: false
+
+      - name: Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Criar bancos oficiais
+        run: |
+          mkdir -p regular/calculadora/db simples/calculadora/db
+          chmod +x regular/mvnw simples/mvnw
+          cp -R regular/flyway simples/flyway
+          (cd regular && ./mvnw flyway:migrate -Dflyway.configFiles=./flyway/flyway-pro.conf --batch-mode --errors)
+          (cd simples && ./mvnw flyway:migrate -Dflyway.configFiles=./flyway/flyway-pro.conf --batch-mode --errors)
+          test -s regular/calculadora/db/calculadora-pro.db
+          test -s simples/calculadora/db/calculadora-pro.db
+
+      - name: Iniciar os dois motores oficiais no runner
+        run: |
+          (cd regular && nohup ./mvnw spring-boot:run -Dspring-boot.run.profiles=offline --batch-mode >api-regular.log 2>&1 &)
+          (cd simples && nohup ./mvnw spring-boot:run -Dspring-boot.run.profiles=offline --batch-mode >api-simples.log 2>&1 &)
+          for i in $(seq 1 160); do
+            reg=$(curl -sS --max-time 2 -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/api/swagger-ui.html 2>/dev/null || true)
+            sim=$(curl -sS --max-time 2 -o /dev/null -w '%{http_code}' http://127.0.0.1:8082/api/versao 2>/dev/null || true)
+            if [ "$reg" = "200" ] && [ "$sim" = "200" ]; then
+              echo 'Motores oficiais regular e simples prontos'
+              exit 0
+            fi
+            sleep 2
+          done
+          tail -70 regular/api-regular.log || true
+          tail -70 simples/api-simples.log || true
+          exit 1
+
+      - name: Executar teste real interface → gateway → APIs oficiais
+        working-directory: site/experimentos/fc-035-integracao
+        run: node --test e2e.test.mjs
+
+      - name: Guardar logs do laboratório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fc035-e2e-motores-oficiais
+          path: |
+            regular/api-regular.log
+            simples/api-simples.log
+          if-no-files-found: warn
+          retention-days: 7
