@@ -1,0 +1,86 @@
+name: FC-035 | Simples Nacional oficial em ambiente isolado
+on:
+  push:
+    branches:
+      - prototype/fc-030-rtc-laboratorio
+    paths:
+      - '.github/workflows/fc035-rtc-simples.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simples-official:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Baixar motor Simples oficial
+        uses: actions/checkout@v4
+        with:
+          repository: ReceitaFederal/calculadora-rtc-simples-nacional
+          path: simples
+          persist-credentials: false
+
+      - name: Baixar migrações oficiais do regime regular
+        uses: actions/checkout@v4
+        with:
+          repository: ReceitaFederal/calculadora-rtc-regime-regular
+          path: regular
+          persist-credentials: false
+
+      - name: Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: simples/pom.xml
+
+      - name: Conferir licenças e preparar scripts
+        run: |
+          java -version
+          test -f simples/LICENSE
+          test -f regular/LICENSE
+          grep -q 'MIT License' simples/LICENSE
+          cp -R regular/flyway simples/flyway
+          chmod +x simples/mvnw
+
+      - name: Criar base SQLite para Simples
+        working-directory: simples
+        run: |
+          mkdir -p calculadora/db
+          ./mvnw flyway:migrate -Dflyway.configFiles=./flyway/flyway-pro.conf --batch-mode --errors
+          test -s ./calculadora/db/calculadora-pro.db
+
+      - name: Executar suíte de testes do Simples Nacional
+        working-directory: simples
+        run: ./mvnw clean test --batch-mode --errors
+
+      - name: Iniciar API oficial Simples offline
+        working-directory: simples
+        run: |
+          nohup ./mvnw spring-boot:run -Dspring-boot.run.profiles=offline --batch-mode > simples-api.log 2>&1 &
+          for i in $(seq 1 150); do
+            status=$(curl -sS --max-time 2 -o versao.json -w '%{http_code}' http://127.0.0.1:8082/api/versao || true)
+            if [ "$status" = "200" ]; then
+              python3 -m json.tool versao.json > /dev/null
+              cat versao.json
+              exit 0
+            fi
+            sleep 2
+          done
+          tail -100 simples-api.log
+          exit 1
+
+      - name: Arquivar provas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fc035-simples-oficial-provas
+          path: |
+            simples/versao.json
+            simples/simples-api.log
+            simples/target/surefire-reports
+          if-no-files-found: warn
+          retention-days: 7
