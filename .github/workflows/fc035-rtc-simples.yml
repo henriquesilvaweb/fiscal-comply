@@ -73,6 +73,54 @@ jobs:
           tail -100 simples-api.log
           exit 1
 
+      - name: Calcular exemplo real de Simples e conferir valores oficiais
+        working-directory: simples
+        run: |
+          cat > exemplo-simples.json <<'JSON'
+          {
+            "id": "507f1f77bcf86cd799439011",
+            "versao": "2.0.0",
+            "data": "2027-03-15",
+            "tpDoc": "55",
+            "CRT": "1",
+            "itens": [{
+              "numero": 1,
+              "cAtivSN": "01",
+              "cClassTrib": "000001",
+              "baseCalculo": "950.00",
+              "valorImpostoSeletivo": "50.00",
+              "pIBSSN": "1.25",
+              "pCBSSN": "2.75"
+            }]
+          }
+          JSON
+          code=$(curl -sS --max-time 60 -o calculo-simples.json -w '%{http_code}' -X POST \
+            http://127.0.0.1:8082/api/calculadora/observabilidade/simples-nacional \
+            -H 'Content-Type: application/json' --data-binary @exemplo-simples.json)
+          echo "Simples HTTP=$code"
+          test "$code" = 200
+          python3 - <<'PY'
+          import json
+          from decimal import Decimal
+          r=json.load(open('calculo-simples.json'))
+          objs=r['objetos']
+          assert len(objs)==1
+          o=objs[0]
+          assert o['estadoItem']=='CALCULADO', o
+          t=o['tribCalc']
+          def dec(x): return Decimal(str(x))
+          assert dec(t['vRBSNitem'])==Decimal('950.00'),t
+          assert dec(t['vIBSSN'])==Decimal('11.88'),t
+          assert dec(t['vCBSSN'])==Decimal('26.12'),t
+          assert dec(t['totalItem'])==Decimal('88.00'),t
+          total=r['total']
+          assert dec(total['vIBSSNtot'])==Decimal('11.88'),total
+          assert dec(total['vCBSSNtot'])==Decimal('26.12'),total
+          assert dec(total['totalTributos'])==Decimal('88.00'),total
+          print('Simples calculado e conferido com exemplo de teste oficial:')
+          print('IBS R$ 11.88, CBS R$ 26.12, IS R$ 50.00, total R$ 88.00')
+          PY
+
       - name: Arquivar provas
         if: always()
         uses: actions/upload-artifact@v4
@@ -80,6 +128,8 @@ jobs:
           name: fc035-simples-oficial-provas
           path: |
             simples/versao.json
+            simples/exemplo-simples.json
+            simples/calculo-simples.json
             simples/simples-api.log
             simples/target/surefire-reports
           if-no-files-found: warn
