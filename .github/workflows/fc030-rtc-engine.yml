@@ -100,8 +100,18 @@ jobs:
           print('Estados:', states)
           assert states[3] == 'INCONSISTENCIA_ENTRADA', 'Quarto item deveria acusar erro da amostra oficial'
           assert all(s in ('CALCULADO','CALCULO_SIMULADO','INCONSISTENCIA_ENTRADA','NAO_IMPLEMENTADO','FALHA_TECNICA') for s in states)
-          assert any(s in ('CALCULADO','CALCULO_SIMULADO') for s in states)
-          print('Contrato real com motor oficial: aprovado. Calculos dependem de revisao tecnica.')
+          assert states[:3] == ['CALCULO_SIMULADO']*3, 'Estados dos três exemplos divergiram do documento oficial'
+          item3 = objs[2]['tribCalc']['IBSCBS']['gIBSCBS']
+          from decimal import Decimal
+          def dec(x): return Decimal(str(x))
+          assert dec(item3['gIBS']['vIBS']) == Decimal('0.48'), item3
+          assert dec(item3['gCBS']['vCBS']) == Decimal('42.24'), item3
+          totals = r['total']['tribCalc']
+          assert dec(totals['IBSCBSTot']['gIBS']['vIBS']) == Decimal('0.64'), totals
+          assert dec(totals['IBSCBSTot']['gCBS']['vCBS']) == Decimal('56.76'), totals
+          assert dec(totals['ISTot']['vIS']) == Decimal('15.00'), totals
+          print('Cálculos do exemplo oficial conferidos: IBS item 3=0.48, CBS item 3=42.24')
+          print('Totais: IBS=0.64, CBS=56.76, IS=15.00. Revisão contábil ainda necessária.')
           PY
 
       - name: Arquivar evidências e logs sem divulgar dados reais
