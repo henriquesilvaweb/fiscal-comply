@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - prototype/fc-030-rtc-laboratorio
+      - feat/fc-035-calculadora-interface
     paths:
       - 'experimentos/fc-035-integracao/**'
       - '.github/workflows/fc035-e2e.yml'
@@ -78,6 +79,10 @@ jobs:
           done
           tail -100 simples/api-simples.log
           exit 1
+
+      - name: Testar montagem dos formulários e segurança do gateway
+        working-directory: site/experimentos/fc-035-integracao
+        run: node --test contract.test.mjs ui.test.mjs
 
       - name: Executar teste real interface → gateway → APIs oficiais
         working-directory: site/experimentos/fc-035-integracao

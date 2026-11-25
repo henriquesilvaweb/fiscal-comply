@@ -15,11 +15,13 @@ function write(res,status,data){
 export function createLabGateway({fetchImpl=fetch}={}){
  return createServer(async(req,res)=>{
   const path=new URL(req.url||'/', 'http://127.0.0.1').pathname;
-  if(req.method==='GET' && (path==='/'||path==='/simples.html')){
-   const filename=path==='/'?'index.html':'simples.html';
+  const assets={'/':'index.html','/simples.html':'simples.html','/app.js':'app.js','/contract.mjs':'contract.mjs','/style.css':'style.css'};
+  if(req.method==='GET' && Object.hasOwn(assets,path)){
+   const filename=assets[path];
    try{
     const content=await readFile(join(dir,filename));
-    res.writeHead(200,{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"});
+    const type=filename.endsWith('.css')?'text/css; charset=utf-8':/\.m?js$/.test(filename)?'text/javascript; charset=utf-8':'text/html; charset=utf-8';
+    res.writeHead(200,{'content-type':type,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; style-src 'self'; script-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"});
     res.end(content);
    }catch{write(res,500,{erro:'Não foi possível abrir interface do laboratório.'});}
    return;

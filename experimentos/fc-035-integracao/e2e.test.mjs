@@ -12,9 +12,9 @@ async function exampleFromPage(page){
  const response=await fetch(base+page);
  assert.equal(response.status,200,'interface disponível');
  const html=await response.text();
- assert.match(html,/LABORATÓRIO LOCAL/i);
- assert.match(html,/Não.*público/i);
- const m=html.match(/const example = (\{[^\n]+?\});/);
+ assert.match(html,/Ambiente de demonstração/i);
+ assert.match(html,/Calculadora em validação/i);
+ const m=html.match(/<script id="example-data" type="application\/json">([^<]+)<\/script>/);
  assert.ok(m,'entrada da interface encontrada');
  return JSON.parse(m[1]);
 }

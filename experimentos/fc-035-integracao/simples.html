@@ -1,13 +1,68 @@
-<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fiscal Comply | Laboratório RTC</title><style>body{margin:0;background:#f8f7f3;color:#203b2d;font:16px system-ui}header{background:#203b2d;color:white;padding:24px}main{max-width:900px;margin:auto;padding:20px}section{border:1px solid #d5ddd5;border-radius:10px;background:white;padding:20px}textarea{width:100%;min-height:230px;box-sizing:border-box;padding:12px;font:13px monospace}button{padding:13px;border:0;background:#216a46;color:white;border-radius:6px;cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}a{color:inherit}.warn{background:#fff4d7;padding:12px;margin:16px 0}</style><header><small>FISCAL COMPLY • LABORATÓRIO LOCAL</small><h1>Reforma Tributária</h1></header><main><div class="warn"><strong>Protótipo técnico, não disponível ao público.</strong> Use apenas dados fictícios. As alíquotas presentes nos exemplos não são orientação tributária.</div><p><a href="/">Regime regular</a> | <a href="/simples.html">Simples Nacional</a></p><section><h2>Simples Nacional</h2><p>O valor é calculado pelo motor oficial quando executado localmente. Resultados parciais devem ser analisados item a item.</p><label for="payload">Operação de teste em JSON</label><textarea id="payload"></textarea><p><button id="run">Consultar API local</button></p><pre id="output" role="status">Nenhuma operação enviada.</pre></section><script>
-const example = {"id":"507f1f77bcf86cd799439011","versao":"2.0.0","data":"2027-03-15","tpDoc":"55","CRT":"1","itens":[{"numero":1,"cAtivSN":"01","cClassTrib":"000001","baseCalculo":"950.00","valorImpostoSeletivo":"50.00","pIBSSN":"1.25","pCBSSN":"2.75"}]};
-document.getElementById('payload').value=JSON.stringify(example,null,2);
-document.getElementById('run').onclick=async ()=>{
-const out=document.getElementById('output');out.textContent='Consultando o motor oficial local...';
-try{
-const resp=await fetch('/api/simples',{method:'POST',headers:{'content-type':'application/json'},body:document.getElementById('payload').value});
-const data=await resp.json();
-if(!resp.ok){out.textContent='Nenhum cálculo válido: '+(data.erro||resp.status);return;}
-out.textContent=JSON.stringify({estados:data.estados,parcial:data.parcial,resultado:data.resultado},null,2);
-}catch(e){out.textContent='Erro na consulta: '+e.message;}
-};
-</script></main></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d30">
+  <title>Simulador da Reforma Tributária | Fiscal Comply</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body data-regime="simples">
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Fiscal Comply, início"><span class="brand-mark">FC</span><span>Fiscal <strong>Comply</strong></span></a>
+    <span class="header-note">Ambiente de demonstração</span>
+  </header>
+  <main class="page-shell">
+    <section class="intro">
+      <p class="eyebrow">REFORMA TRIBUTÁRIA</p>
+      <h1>Entenda a simulação da sua operação</h1>
+      <p class="intro-copy">Informe os dados fiscais da operação e veja o retorno dos motores de código aberto da Receita Federal.</p>
+      <div class="demo-alert" role="note"><span class="alert-icon" aria-hidden="true">!</span><div><strong>Calculadora em validação</strong><p>Os valores são simulações técnicas. Não substituem orientação contábil e não representam uma apuração fiscal.</p></div></div>
+    </section>
+
+    <nav class="regime-tabs" aria-label="Escolha do regime tributário">
+      <a class="regime-tab" href="/"><span>01</span><span><strong>Regime regular</strong><small>CBS, IBS e Imposto Seletivo</small></span></a>
+      <a class="regime-tab active" href="/simples.html" aria-current="page"><span>02</span><span><strong>Simples Nacional</strong><small>CBS e IBS do Simples</small></span></a>
+    </nav>
+
+    <form id="calc-form" novalidate>
+      <section class="form-section">
+        <div class="section-heading"><span class="step">1</span><div><h2>Dados da operação</h2><p>Este motor trata apenas os campos de CBS e IBS previstos para operações do Simples Nacional.</p></div></div>
+        <div class="grid three">
+          <label class="field"><span>Data da operação</span><input name="data" type="date" required><small>Data de referência do cálculo.</small></label>
+          <label class="field"><span>Tipo de documento</span><input name="tpDoc" inputmode="numeric" maxlength="2" placeholder="Código" required><small>Código conforme documento fiscal.</small></label>
+          <label class="field"><span>CRT</span><select name="CRT" required><option value="">Selecione</option><option value="1">1 • Simples Nacional</option></select><small>O serviço é separado do regime regular.</small></label>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading"><span class="step">2</span><div><h2>Item da operação</h2><p>Use os códigos e percentuais conforme a atividade, a classificação e a vigência.</p></div></div>
+        <div class="field-guide"><strong>Não sabe a atividade ou a classificação?</strong> Não escolha por aproximação. Confirme cAtivSN, cClassTrib e as alíquotas com o profissional responsável.</div>
+        <div id="items" class="items-list"><article class="item-card" data-item>
+          <div class="grid two">
+            <label class="field"><span>Atividade no Simples (cAtivSN)</span><input name="cAtivSN" maxlength="2" placeholder="Código oficial" required><small>Atividade usada pelo motor para esta operação.</small></label>
+            <label class="field"><span>Classificação tributária (cClassTrib)</span><input name="cClassTrib" inputmode="numeric" maxlength="6" placeholder="Código oficial" required><small>Confirme o código aplicável e sua vigência.</small></label>
+            <label class="field"><span>Base de cálculo (R$)</span><input name="baseCalculo" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0,00" required><small>Base do item conforme documentação fiscal.</small></label>
+            <label class="field"><span>Imposto Seletivo (R$), se aplicável</span><input name="valorImpostoSeletivo" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0,00"><small>Deixe em branco quando não se aplicar.</small></label>
+          </div>
+          <div class="subsection-title">Percentuais informados pelo responsável</div>
+          <div class="grid two">
+            <label class="field"><span>IBS do Simples (%)</span><input name="pIBSSN" inputmode="decimal" type="number" min="0" step="any" placeholder="Informado pelo contador" required></label>
+            <label class="field"><span>CBS do Simples (%)</span><input name="pCBSSN" inputmode="decimal" type="number" min="0" step="any" placeholder="Informado pelo contador" required></label>
+          </div>
+        </article></div>
+        <button type="button" id="add-item" class="button-secondary">+ Adicionar outro item</button>
+      </section>
+
+      <div id="form-error" class="form-error" role="alert" hidden></div>
+      <div class="form-actions"><button type="button" id="load-example" class="button-secondary">Carregar exemplo oficial fictício</button><button type="submit" id="run" class="button-primary">Simular operação <span aria-hidden="true">→</span></button></div>
+      <p class="privacy-note">No laboratório, os dados são enviados somente aos motores executados localmente e não são gravados pelo gateway.</p>
+    </form>
+
+    <section id="result" class="result-section" aria-live="polite" aria-busy="false" hidden></section>
+    <footer class="page-footer"><span>Fiscal Comply • Demonstração técnica independente</span><span>Os motores são projetos de código aberto da Receita Federal.</span></footer>
+  </main>
+  <script id="example-data" type="application/json">{"id":"507f1f77bcf86cd799439011","versao":"2.0.0","data":"2027-03-15","tpDoc":"55","CRT":"1","itens":[{"numero":1,"cAtivSN":"01","cClassTrib":"000001","baseCalculo":"950.00","valorImpostoSeletivo":"50.00","pIBSSN":"1.25","pCBSSN":"2.75"}]}</script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
