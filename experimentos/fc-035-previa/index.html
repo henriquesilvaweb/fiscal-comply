@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d30">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Regime regular | Prévia da calculadora | Fiscal Comply</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body data-regime="regular">
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Fiscal Comply, início"><span class="brand-mark">FC</span><span>Fiscal <strong>Comply</strong></span></a>
+    <span class="header-note">Prévia demonstrativa</span>
+  </header>
+  <main class="page-shell">
+    <section class="intro">
+      <p class="eyebrow">REFORMA TRIBUTÁRIA</p>
+      <h1>Calculadora da Reforma Tributária<br><span class="regime-name">Regime regular</span></h1>
+      <p class="intro-copy">Explore o formulário e veja os resultados de um exemplo fictício da Receita Federal, conferido nos testes do laboratório.</p>
+      <div class="demo-alert" role="note"><span class="alert-icon" aria-hidden="true">!</span><div><strong>Modo demonstrativo</strong><p>Esta prévia exibe apenas o resultado do exemplo validado. Use dados fictícios.</p></div></div>
+    </section>
+
+    <nav class="regime-tabs" aria-label="Escolha do regime tributário">
+      <a class="regime-tab active" href="/" aria-current="page"><span>01</span><span><strong>Regime regular</strong><small>CBS, IBS e Imposto Seletivo</small></span></a>
+      <a class="regime-tab" href="/simples.html"><span>02</span><span><strong>Simples Nacional</strong><small>CBS e IBS do Simples</small></span></a>
+    </nav>
+
+    <div class="example-actions"><button type="button" id="load-example" class="button-secondary">Preencher exemplo fictício</button><p id="example-status" role="status"></p><a href="#run" id="jump-result" hidden>Ir ao botão de resultado</a></div>
+
+    <form id="calc-form" novalidate>
+      <section class="form-section">
+        <div class="section-heading"><span class="step">1</span><div><h2>Dados da operação</h2><p>Preencha os campos com os dados do exemplo para ver o resultado.</p></div></div>
+        <div class="grid three">
+          <label class="field"><span>Data e hora do fato gerador</span><input name="dhFatoGerador" type="datetime-local" required><small>Momento da operação informado no documento fiscal.</small></label>
+          <label class="field"><span>Fuso horário da operação</span><select name="fuso" required><option value="-05:00">UTC−05:00</option><option value="-04:00">UTC−04:00</option><option value="-03:00" selected>UTC−03:00</option><option value="-02:00">UTC−02:00</option><option value="+00:00">UTC±00:00</option></select><small>Confirme o fuso usado no documento fiscal.</small></label>
+          <label class="field"><span>UF da operação</span><select name="uf" required><option value="">Selecione</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select><small>Local de destino para a operação.</small></label>
+          <label class="field"><span>Município (código IBGE)</span><input name="municipio" inputmode="numeric" maxlength="7" placeholder="Ex.: 3550308" required><small>Informe o código oficial de sete dígitos.</small></label>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-heading"><span class="step">2</span><div><h2>Itens da operação</h2><p>Classificação e percentuais precisam ser confirmados por um profissional responsável.</p></div></div>
+        <div class="field-guide"><strong>Não sabe o CST, o cClassTrib ou as alíquotas?</strong> Não estime esses dados. Confirme a classificação e os percentuais aplicáveis com seu contador antes de simular.</div>
+        <div id="items" class="items-list">
+          <article class="item-card" data-item>
+            <div class="item-title"><strong>Item 1</strong><button type="button" class="remove-item" hidden>Remover</button></div>
+            <div class="grid two">
+              <label class="field"><span>NCM do produto</span><input name="ncm" inputmode="numeric" maxlength="8" placeholder="8 dígitos"><small>Preencha NCM ou NBS. Para serviço, use NBS.</small></label>
+              <label class="field"><span>NBS do serviço</span><input name="nbs" inputmode="numeric" maxlength="9" placeholder="9 dígitos"><small>Preencha NCM ou NBS, conforme o item.</small></label>
+              <label class="field"><span>CST</span><input name="cst" inputmode="numeric" maxlength="3" placeholder="Código oficial" required><small>Código de situação tributária da operação.</small></label>
+              <label class="field"><span>Classificação tributária (cClassTrib)</span><input name="cClassTrib" inputmode="numeric" maxlength="6" placeholder="Código oficial" required><small>Use o código aplicável à operação e à vigência.</small></label>
+              <label class="field"><span>Base de cálculo (R$)</span><input name="baseCalculo" inputmode="decimal" type="number" min="0" step="0.01" placeholder="0,00"><small>Informe a base ou use quantidade e unidade se o contrato do item exigir.</small></label>
+              <label class="field"><span>Quantidade (se aplicável)</span><input name="quantidade" inputmode="decimal" type="number" min="0" step="any" placeholder="Opcional"></label>
+              <label class="field"><span>Unidade de medida</span><input name="unidade" maxlength="10" placeholder="Ex.: UN, KG"><small>Obrigatória quando usar quantidade.</small></label>
+            </div>
+            <div class="subsection-title">Alíquotas nominais do cenário</div>
+            <div class="grid three">
+              <label class="field"><span>CBS (%)</span><input name="cbs" inputmode="decimal" type="number" min="0" step="any" placeholder="Informada pelo contador" required></label>
+              <label class="field"><span>IBS estadual (%)</span><input name="ibsEstadual" inputmode="decimal" type="number" min="0" step="any" placeholder="Informada pelo contador" required></label>
+              <label class="field"><span>IBS municipal (%)</span><input name="ibsMunicipal" inputmode="decimal" type="number" min="0" step="any" placeholder="Informada pelo contador" required></label>
+            </div>
+            <details class="is-fields"><summary>Imposto Seletivo, se aplicável</summary><p>Informe apenas os campos previstos para esta operação e confirmados pelo profissional responsável.</p><div class="grid three"><label class="field"><span>IS: CST</span><input name="isCst" inputmode="numeric" maxlength="3" placeholder="Código"></label><label class="field"><span>IS: cClassTrib</span><input name="isCClassTrib" inputmode="numeric" maxlength="6" placeholder="Código"></label><label class="field"><span>IS: base de cálculo (R$)</span><input name="isBase" type="number" min="0" step="0.01" placeholder="0,00"></label><label class="field"><span>IS: quantidade</span><input name="isQuantidade" type="number" min="0" step="any" placeholder="Opcional"></label><label class="field"><span>IS: unidade</span><input name="isUnidade" maxlength="10" placeholder="Ex.: LT"></label><label class="field"><span>IS: valor informado (R$)</span><input name="isInformado" type="number" min="0" step="0.01" placeholder="0,00"></label><label class="field"><span>IS: alíquota ad valorem (%)</span><input name="isAdValorem" type="number" min="0" step="any" placeholder="Informada pelo contador"></label></div></details>
+          </article>
+        </div>
+        <button type="button" id="add-item" class="button-secondary">+ Adicionar outro item</button>
+      </section>
+
+      <div id="form-error" class="form-error" role="alert" hidden></div>
+      <div class="form-actions"><button type="submit" id="run" class="button-primary">Ver resultado do exemplo <span aria-hidden="true">→</span></button></div>
+      <p class="privacy-note">Os dados digitados ficam nesta página e não são enviados a um servidor.</p>
+    </form>
+
+    <section id="result" tabindex="-1" class="result-section" aria-live="polite" aria-busy="false" hidden></section>
+
+    <footer class="page-footer"><span>Fiscal Comply • Demonstração técnica independente</span><span>Os motores são projetos de código aberto da Receita Federal.</span></footer>
+  </main>
+
+  <script id="example-data" type="application/json">{"id":"6194602ea71cbf9431c236de4409d920","versao":"1.0.0","dhFatoGerador":"2027-03-10T10:00:00-03:00","municipio":4314902,"uf":"RS","itens":[{"numero":1,"ncm":"10063021","cst":"200","cClassTrib":"200003","baseCalculo":100,"quantidade":20,"unidade":"KG","aliquotasNominais":{"cbs":8.8,"ibsEstadual":0.05,"ibsMunicipal":0.05}},{"numero":2,"ncm":"22030000","cst":"000","cClassTrib":"000001","quantidade":12,"unidade":"LT","impostoSeletivo":{"cst":"000","cClassTrib":"000001","baseCalculo":150,"quantidade":12,"unidade":"LT","impostoInformado":15},"aliquotasNominais":{"cbs":8.8,"ibsEstadual":0.05,"ibsMunicipal":0.05,"impostoSeletivo":{"adValorem":10}}},{"numero":3,"nbs":"122011200","cst":"200","cClassTrib":"200028","baseCalculo":1200,"aliquotasNominais":{"cbs":8.8,"ibsEstadual":0.05,"ibsMunicipal":0.05}},{"numero":4,"ncm":"02013000","cst":"200","cClassTrib":"200035","baseCalculo":80,"aliquotasNominais":{"cbs":8.8,"ibsEstadual":0.05,"ibsMunicipal":0.05}}]}</script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
